@@ -1,15 +1,15 @@
 # LA TAQUERA — productos y precios (MXN)
 
 ## Salsa
-- Salsa La Taquera 150 ml (salsa de ajo, picor medio, hecha con ajo fresco): $59 MXN
+- Salsa La Taquera 150 ml (salsa de ajo, picor medio, hecha con ajo fresco): $79 MXN
 
 ## Ropa y accesorios (merch)
-- Playera blanca, logo al pecho, talla única oversize: $329 MXN
-- Playera negra, logo al pecho, talla única oversize: $329 MXN
-- Playera blanca, ajo en la espalda, talla única oversize: $349 MXN
-- Playera negra, ajo en la espalda, talla única oversize: $349 MXN
-- Gorra crema, wordmark bordado, ajustable: $279 MXN
-- Gorra negra, mascota bordada, ajustable: $279 MXN
+- Playera blanca, logo al pecho, talla única oversize: $449 MXN
+- Playera negra, logo al pecho, talla única oversize: $449 MXN
+- Playera blanca, ajo en la espalda, talla única oversize: $479 MXN
+- Playera negra, ajo en la espalda, talla única oversize: $479 MXN
+- Gorra crema, wordmark bordado, ajustable: $429 MXN
+- Gorra negra, mascota bordada, ajustable: $429 MXN
 - Tote bag natural, manta de algodón: $249 MXN
 - Pack de 4 stickers, vinil resistente al agua: $99 MXN
 
