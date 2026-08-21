@@ -918,7 +918,7 @@ if(navToggle){
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            items: [{ title: 'Salsa La Taquera 150 ml', quantity: 1, unit_price: 79 }],
+            items: [{ id: 'salsa-150', quantity: 1 }],
             customer: { name, email }
           })
         });
