@@ -13,6 +13,8 @@ import yaml
 from anthropic import AsyncAnthropic
 from dotenv import load_dotenv
 
+from agent.tools import ESQUEMAS_HERRAMIENTAS, ejecutar_herramienta, obtener_horario
+
 load_dotenv()
 logger = logging.getLogger("agentkit")
 
@@ -38,6 +40,11 @@ MAX_TOKENS = int(os.getenv("ANTHROPIC_MAX_TOKENS") or "4096")
 # Los modelos mas viejos no aceptan output_config. Si la primera llamada falla por eso,
 # se reintenta sin el parametro y se recuerda para las siguientes.
 _soporta_esfuerzo = True
+
+# Cuantas veces puede el agente pedir herramientas antes de tener que contestar. Una
+# conversacion normal usa 1 (registrar el pedido); el tope es para que un modelo que se
+# atore pidiendo lo mismo no se quede dando vueltas ni queme tokens.
+MAX_VUELTAS_HERRAMIENTAS = 5
 
 
 def cargar_config_prompts() -> dict:
@@ -84,6 +91,25 @@ def _extraer_texto(respuesta) -> str:
     return "\n".join(p for p in partes if p).strip()
 
 
+def _contexto_del_momento() -> str:
+    """
+    Lo que el modelo no puede saber por si mismo: en que momento esta ocurriendo la
+    conversacion y si el negocio esta abierto.
+
+    Sin esto, la regla de "fuera de horario" del system prompt es letra muerta: el
+    modelo no tiene reloj y no puede decidir si aplicarla.
+    """
+    h = obtener_horario()
+    estado = "ABIERTO" if h["esta_abierto"] else "CERRADO"
+    return (
+        "\n\n## Momento actual\n"
+        f"Ahora mismo es {h['hora_local']} (hora del negocio) y el negocio esta {estado}. "
+        f"Horario: {h['horario']}.\n"
+        "Si esta CERRADO, avisale al cliente del horario, pero igual atiendelo y toma su "
+        "pedido: no lo dejes esperando hasta el dia siguiente."
+    )
+
+
 def _es_error_de_esfuerzo(error: Exception) -> bool:
     """
     True solo si el modelo rechazo la llamada POR el parametro output_config/effort.
@@ -98,13 +124,18 @@ def _es_error_de_esfuerzo(error: Exception) -> bool:
     return "output_config" in texto or "effort" in texto
 
 
-async def generar_respuesta(mensaje: str, historial: list[dict]) -> tuple[str, bool]:
+async def generar_respuesta(
+    mensaje: str, historial: list[dict], telefono: str = ""
+) -> tuple[str, bool]:
     """
-    Genera una respuesta con Claude.
+    Genera una respuesta con Claude, dejandolo usar herramientas si hacen falta.
 
     Args:
         mensaje: el mensaje nuevo del cliente
         historial: los mensajes anteriores, [{"role": "user"|"assistant", "content": "..."}]
+        telefono: el numero de esta conversacion. Se le pasa al despachador de
+            herramientas para que un pedido quede guardado a nombre de quien escribe;
+            el modelo nunca elige a que telefono escribir.
 
     Returns:
         (texto, es_respuesta_real)
@@ -122,8 +153,7 @@ async def generar_respuesta(mensaje: str, historial: list[dict]) -> tuple[str, b
     mensajes = [{"role": m["role"], "content": m["content"]} for m in historial]
     mensajes.append({"role": "user", "content": mensaje})
 
-    system_prompt = cargar_system_prompt()
-    extras = {"output_config": {"effort": ESFUERZO}} if (_soporta_esfuerzo and ESFUERZO) else {}
+    system_prompt = cargar_system_prompt() + _contexto_del_momento()
 
     async def _llamar(parametros_extra: dict):
         return await client.messages.create(
@@ -131,31 +161,69 @@ async def generar_respuesta(mensaje: str, historial: list[dict]) -> tuple[str, b
             max_tokens=MAX_TOKENS,
             system=system_prompt,
             messages=mensajes,
+            tools=ESQUEMAS_HERRAMIENTAS,
             **parametros_extra,
         )
 
-    try:
-        respuesta = await _llamar(extras)
-    except Exception as e:  # noqa: BLE001
-        if extras and _es_error_de_esfuerzo(e):
-            logger.warning(
-                f"El modelo {MODELO} no acepta output_config.effort; se reintenta sin ese parametro."
-            )
-            _soporta_esfuerzo = False
-            try:
-                respuesta = await _llamar({})
-            except Exception as e2:  # noqa: BLE001
-                logger.error(f"Error llamando a Claude: {e2}")
-                return obtener_mensaje_error(), False
-        else:
+    async def _llamar_con_reintento():
+        """Una llamada al modelo, apagando output_config si este modelo no lo acepta."""
+        global _soporta_esfuerzo
+        parametros = {"output_config": {"effort": ESFUERZO}} if (_soporta_esfuerzo and ESFUERZO) else {}
+        try:
+            return await _llamar(parametros)
+        except Exception as e:  # noqa: BLE001
+            if parametros and _es_error_de_esfuerzo(e):
+                logger.warning(
+                    f"El modelo {MODELO} no acepta output_config.effort; se reintenta sin ese parametro."
+                )
+                _soporta_esfuerzo = False
+                return await _llamar({})
+            raise
+
+    respuesta = None
+    for vuelta in range(MAX_VUELTAS_HERRAMIENTAS + 1):
+        try:
+            respuesta = await _llamar_con_reintento()
+        except Exception as e:  # noqa: BLE001
             logger.error(f"Error llamando a Claude: {e}")
             return obtener_mensaje_error(), False
 
-    if getattr(respuesta, "stop_reason", None) == "max_tokens":
-        logger.warning(
-            f"La respuesta se corto por llegar al tope de {MAX_TOKENS} tokens. "
-            "Si pasa seguido, sube ANTHROPIC_MAX_TOKENS o acorta el system prompt."
-        )
+        if getattr(respuesta, "stop_reason", None) == "max_tokens":
+            logger.warning(
+                f"La respuesta se corto por llegar al tope de {MAX_TOKENS} tokens. "
+                "Si pasa seguido, sube ANTHROPIC_MAX_TOKENS o acorta el system prompt."
+            )
+
+        if respuesta.stop_reason != "tool_use":
+            break
+
+        if vuelta == MAX_VUELTAS_HERRAMIENTAS:
+            logger.error(
+                f"El agente pidio herramientas {MAX_VUELTAS_HERRAMIENTAS} veces seguidas sin "
+                "contestar; se corta el ciclo."
+            )
+            return obtener_mensaje_error(), False
+
+        # Se devuelve el turno completo del asistente (incluidos los bloques de tool_use)
+        # y despues los resultados. La API exige que cada tool_use tenga su tool_result
+        # con el mismo id, en el turno inmediatamente siguiente.
+        mensajes.append({"role": "assistant", "content": respuesta.content})
+
+        resultados = []
+        for bloque in respuesta.content:
+            if bloque.type != "tool_use":
+                continue
+            logger.info(f"El agente usa la herramienta {bloque.name} para {telefono}")
+            salida = await ejecutar_herramienta(bloque.name, bloque.input or {}, telefono)
+            resultados.append(
+                {
+                    "type": "tool_result",
+                    "tool_use_id": bloque.id,
+                    "content": salida,
+                    "is_error": salida.startswith("ERROR"),
+                }
+            )
+        mensajes.append({"role": "user", "content": resultados})
 
     texto = _extraer_texto(respuesta)
     if not texto:

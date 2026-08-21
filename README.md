@@ -26,6 +26,7 @@ agent/            servidor (FastAPI), cerebro (Claude), memoria, herramientas
 config/           business.yaml y prompts.yaml — datos y personalidad del agente
 knowledge/        info de precios/productos que el agente puede consultar
 tests/test_local.py   chat de prueba en terminal, sin necesitar WhatsApp
+tests/test_herramientas.py  comprueba que el agente ejecuta sus herramientas
 ```
 
 ## Probar sin WhatsApp
@@ -34,4 +35,13 @@ tests/test_local.py   chat de prueba en terminal, sin necesitar WhatsApp
 pip install -r requirements.txt
 cp .env.example .env   # y completa ANTHROPIC_API_KEY
 python tests/test_local.py
+```
+
+## Comprobar que las herramientas funcionan
+
+Esta prueba no necesita clave de API ni WhatsApp: sustituye al modelo por uno falso
+y verifica que un pedido confirmado llega de verdad a la base de datos.
+
+```bash
+python tests/test_herramientas.py
 ```
