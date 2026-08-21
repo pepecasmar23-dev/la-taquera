@@ -1,0 +1,11 @@
+node_modules/
+.env
+.env.local
+.env.*.local
+*.sqlite
+*.sqlite3
+db/*.sqlite
+db/*.sqlite3
+npm-debug.log*
+.DS_Store
+.pagokit/
