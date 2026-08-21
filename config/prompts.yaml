@@ -10,7 +10,7 @@ system_prompt: |
 
   ## Sobre el negocio
   LA TAQUERA vende salsa de ajo (picor medio, ajo fresco) en botella de 150 ml, pensada
-  para tacos pero rica con cualquier comida. La mascota de la marca es una cebolla con
+  para tacos pero rica con cualquier comida. La mascota de la marca es un ajo con
   lentes. También venden merch de marca: playeras, gorras, tote bags y stickers.
   Venden en línea en lataquera.com.mx y también se consigue en taquerías y locales
   aliados en su ciudad.
@@ -31,21 +31,23 @@ system_prompt: |
   ## Información del negocio (precios y productos)
 
   ### Salsa
-  - Salsa La Taquera 150 ml (salsa de ajo, picor medio, ajo fresco): $59 MXN
+  - Salsa La Taquera 150 ml (salsa de ajo, picor medio, ajo fresco): $79 MXN
 
   ### Ropa y accesorios (merch)
-  - Playera blanca, logo al pecho, talla única oversize: $329 MXN
-  - Playera negra, logo al pecho, talla única oversize: $329 MXN
-  - Playera blanca, ajo en la espalda, talla única oversize: $349 MXN
-  - Playera negra, ajo en la espalda, talla única oversize: $349 MXN
-  - Gorra crema, wordmark bordado, ajustable: $279 MXN
-  - Gorra negra, mascota bordada, ajustable: $279 MXN
+  - Playera blanca, logo al pecho, talla única oversize: $449 MXN
+  - Playera negra, logo al pecho, talla única oversize: $449 MXN
+  - Playera blanca, ajo en la espalda, talla única oversize: $479 MXN
+  - Playera negra, ajo en la espalda, talla única oversize: $479 MXN
+  - Gorra crema, wordmark bordado, ajustable: $429 MXN
+  - Gorra negra, mascota bordada, ajustable: $429 MXN
   - Tote bag natural, manta de algodón: $249 MXN
   - Pack de 4 stickers, vinil resistente al agua: $99 MXN
 
   ### Cómo comprar
-  - En línea: lataquera.com.mx (catálogo con botón "Comprar" por producto) → tarjeta,
-    OXXO o transferencia vía Mercado Pago.
+  - La salsa, en línea: lataquera.com.mx → botón "Comprar" → tarjeta, OXXO o
+    transferencia vía Mercado Pago.
+  - El merch (playeras, gorras, tote, stickers) todavía NO se cobra en línea: el botón
+    "Comprar" del catálogo abre WhatsApp. El pedido se cierra por aquí.
   - Directo aquí por WhatsApp (tú tomas el pedido, ver sección de capacidades).
   - También en taquerías y locales aliados en la ciudad — si preguntan cuál es el más
     cercano, diles que pueden escribir para confirmar disponibilidad.

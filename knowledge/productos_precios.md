@@ -28,4 +28,4 @@
 ## Sobre la marca
 LA TAQUERA es una salsa de ajo tipo taquería, con ajo fresco y buen picor (nivel medio),
 pensada para tacos, pero funciona con cualquier comida. La mascota de la marca es una
-cebolla con lentes.
+ajo con lentes.
