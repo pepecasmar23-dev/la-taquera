@@ -130,9 +130,19 @@ footer{background:#150C08;color:rgba(242,233,216,.7);padding:64px 0 30px;}
 .fab.show{opacity:1;transform:translateY(0) scale(1);pointer-events:auto;}
 .fab svg{width:30px;height:30px;color:#0b3b1f;}
 .fab:hover{transform:translateY(-3px) scale(1.05);}
+
+/* ---------- cursor: la mascota de ajo sustituye al puntero ---------- */
+.cursor-sticker{position:fixed;top:0;left:0;width:54px;height:auto;pointer-events:none;z-index:199;opacity:0;will-change:transform;filter:drop-shadow(0 10px 18px rgba(0,0,0,.4));}
+@media (hover:hover) and (pointer:fine){
+  body{cursor:none;}
+  input,textarea,select{cursor:text;}
+  input[type="checkbox"],input[type="radio"],input[type="submit"]{cursor:pointer;}
+}
+@media (hover:none),(pointer:coarse){.cursor-sticker{display:none;}}
 </style>
 </head>
 <body>
+<img class="cursor-sticker" id="cursorSticker" src="img/i000.png" data-default="img/i001.png" data-fire="img/i002.png" alt="" aria-hidden="true">
 
 <header class="nav" id="nav">
   <div class="wrap nav-inner">
@@ -407,6 +417,51 @@ if(window.matchMedia('(hover:hover) and (pointer:fine)').matches){
     card.addEventListener('mouseleave', ()=>{ card.style.transform = ''; });
   });
 }
+
+/* ---------- cursor: la mascota de ajo sustituye al puntero ---------- */
+/* Mismo comportamiento que en la landing: sigue al raton con retardo suave,
+   se inclina segun la direccion, crece sobre elementos interactivos y escupe
+   fuego sobre lo que saca al cliente del sitio (los 8 botones de WhatsApp). */
+(function(){
+  const cursorSticker = document.getElementById("cursorSticker");
+  const isTouch = window.matchMedia("(hover:none), (pointer:coarse)").matches;
+  if(!cursorSticker || isTouch) return;
+
+  const lerp = (a, b, t) => a + (b - a) * t;
+  let mx = window.innerWidth/2, my = window.innerHeight/2, sx = mx, sy = my;
+  let shown = false, hovering = false, rot = -10;
+
+  document.addEventListener("mousemove", (e)=>{
+    mx = e.clientX; my = e.clientY;
+    if(!shown){ cursorSticker.style.opacity = "1"; shown = true; }
+  });
+
+  function stickerLoop(){
+    const prevSx = sx;
+    sx = lerp(sx, mx, 0.22);
+    sy = lerp(sy, my, 0.22);
+    const dx = sx - prevSx;
+    const targetRot = Math.max(-20, Math.min(20, dx * 2.4)) - 10;
+    rot = lerp(rot, targetRot, 0.15);
+    const scale = hovering ? 1.16 : 1;
+    cursorSticker.style.transform = "translate(" + sx + "px," + sy + "px) translate(-50%,-58%) rotate(" + rot + "deg) scale(" + scale + ")";
+    requestAnimationFrame(stickerLoop);
+  }
+  stickerLoop();
+
+  document.querySelectorAll("a, button, .variant-card").forEach(el=>{
+    el.addEventListener("mouseenter", ()=> hovering = true);
+    el.addEventListener("mouseleave", ()=> hovering = false);
+  });
+
+  /* elementos que llevan fuera del sitio: el ajo escupe fuego */
+  const srcDefault = cursorSticker.getAttribute("data-default");
+  const srcFire = cursorSticker.getAttribute("data-fire");
+  document.querySelectorAll("a.variant-buy, a.fab, .cursor-fire-link").forEach(el=>{
+    el.addEventListener("mouseenter", ()=>{ if(srcFire) cursorSticker.src = srcFire; });
+    el.addEventListener("mouseleave", ()=>{ if(srcDefault) cursorSticker.src = srcDefault; });
+  });
+})();
 </script>
 </body>
 </html>
