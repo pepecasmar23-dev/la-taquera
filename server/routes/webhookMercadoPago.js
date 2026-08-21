@@ -107,6 +107,29 @@ router.post(
       if (externalReference) {
         const order = getOrderByExternalReference(externalReference);
         if (order) {
+          // Segunda barrera contra manipulación de precios: el importe que
+          // Mercado Pago dice haber cobrado tiene que coincidir con el que
+          // calculó el servidor al crear el pedido. Si no cuadra, el pedido NO
+          // pasa a pagado — queda marcado para revisión manual.
+          const cobrado = Number(payment.transaction_amount);
+          const esperado = Number(order.amount);
+          const cuadra = Number.isFinite(cobrado) && Math.abs(cobrado - esperado) < 0.01;
+
+          if (!cuadra && payment.status === 'approved') {
+            console.error('[webhook/mercadopago] IMPORTE NO COINCIDE', {
+              externalReference,
+              esperado,
+              cobrado,
+              mpPaymentId: String(payment.id),
+            });
+            updateOrderStatusByExternalReference(externalReference, {
+              status: 'amount_mismatch',
+              mpPaymentId: String(payment.id),
+            });
+            markEventProcessed(eventId, eventType);
+            return res.status(200).json({ ok: true, flagged: 'amount_mismatch' });
+          }
+
           const newStatus = mapMpStatusToOrderStatus(payment.status);
           updateOrderStatusByExternalReference(externalReference, {
             status: newStatus,

@@ -7,6 +7,7 @@ const crypto = require('crypto');
 const express = require('express');
 const { preferenceClient } = require('../lib/mercadopago');
 const { insertPendingOrder, setPreferenceId, recordIdempotencyKey } = require('../db/index');
+const { resolverItems } = require('../data/catalogo');
 
 const router = express.Router();
 
@@ -16,16 +17,15 @@ function isNonEmptyString(v) {
 
 router.post('/create-preference', express.json(), async (req, res) => {
   try {
-    const { items, customer } = req.body || {};
+    const { customer } = req.body || {};
 
-    if (!Array.isArray(items) || items.length === 0) {
-      return res.status(400).json({ error: 'items es requerido y debe tener al menos un elemento.' });
+    // El precio SIEMPRE sale del catálogo del servidor (data/catalogo.js). El
+    // navegador solo manda { id, quantity }; si incluye un unit_price, se ignora.
+    const resueltos = resolverItems(req.body && req.body.items);
+    if (!resueltos.ok) {
+      return res.status(400).json({ error: resueltos.error });
     }
-    for (const it of items) {
-      if (!isNonEmptyString(it.title) || !(Number(it.quantity) > 0) || !(Number(it.unit_price) > 0)) {
-        return res.status(400).json({ error: 'Cada item requiere title, quantity y unit_price válidos.' });
-      }
-    }
+    const items = resueltos.items;
     // Rule 11: PII mínima — solo lo necesario para contactar y enviar el pedido.
     // Nunca tarjeta, identificaciones ni fecha de nacimiento: eso lo captura
     // Mercado Pago directamente en su propia pantalla de pago.
@@ -46,8 +46,8 @@ router.post('/create-preference', express.json(), async (req, res) => {
 
     const externalReference = crypto.randomUUID();
     const orderId = crypto.randomUUID();
-    const amount = items.reduce((sum, it) => sum + Number(it.unit_price) * Number(it.quantity), 0);
-    const currency = 'MXN';
+    const amount = resueltos.amount;
+    const currency = resueltos.currency;
 
     insertPendingOrder({
       id: orderId,

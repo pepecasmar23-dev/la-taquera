@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS orders (
   items_json         TEXT NOT NULL,
   amount             REAL NOT NULL,
   currency           TEXT NOT NULL DEFAULT 'MXN',
-  status             TEXT NOT NULL DEFAULT 'pending', -- pending | approved | rejected | refunded | cancelled | in_process
+  status             TEXT NOT NULL DEFAULT 'pending', -- pending | approved | rejected | refunded | cancelled | in_process | amount_mismatch
   mp_payment_id      TEXT,
   mp_preference_id   TEXT,
   created_at         TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ','now')),

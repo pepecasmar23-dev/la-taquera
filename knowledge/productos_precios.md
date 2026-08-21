@@ -14,8 +14,10 @@
 - Pack de 4 stickers, vinil resistente al agua: $99 MXN
 
 ## Cómo comprar
-- En línea: en la página lataquera.com.mx, sección de producto o catálogo (catalogo.html) →
-  botón "Comprar" → paga con tarjeta, OXXO o transferencia (Mercado Pago).
+- La salsa, en línea: en la página, botón "Comprar" → paga con tarjeta, OXXO o
+  transferencia (Mercado Pago).
+- El merch (playeras, gorras, tote, stickers), por WhatsApp: el botón "Comprar" del
+  catálogo abre una conversación con el pedido ya escrito. Todavía no se cobra en línea.
 - También se puede pedir directo por este WhatsApp.
 - La salsa y el merch también se consiguen en taquerías y locales aliados en la ciudad
   (si el cliente pregunta cuáles, dile que puede escribir para confirmar el más cercano).
