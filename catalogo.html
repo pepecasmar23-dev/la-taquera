@@ -457,7 +457,7 @@ if(window.matchMedia('(hover:hover) and (pointer:fine)').matches){
   /* elementos que llevan fuera del sitio: el ajo escupe fuego */
   const srcDefault = cursorSticker.getAttribute("data-default");
   const srcFire = cursorSticker.getAttribute("data-fire");
-  document.querySelectorAll("a.variant-buy, a.fab, .cursor-fire-link").forEach(el=>{
+  document.querySelectorAll("button, .btn, a.variant-buy, a.fab, .cat-pill, .store-logo, .merch-card, .cursor-fire-link").forEach(el=>{
     el.addEventListener("mouseenter", ()=>{ if(srcFire) cursorSticker.src = srcFire; });
     el.addEventListener("mouseleave", ()=>{ if(srcDefault) cursorSticker.src = srcDefault; });
   });
