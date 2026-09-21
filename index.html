@@ -341,7 +341,7 @@ footer{background:#150C08;color:rgba(242,233,216,.7);padding:64px 0 30px;}
 </section>
 
 <!-- ================= PRODUCT ================= -->
-<section class="product" id="producto">
+<section class="product" id="producto" data-product-id="salsa">
   <div class="product-media"><img src="img/i010.jpg" alt="Salsa La Taquera 150ml"></div>
   <div class="product-scrim"></div>
   <div class="price-tag reveal"><span class="amt">$79</span><span class="cur">MXN</span></div>
@@ -424,6 +424,8 @@ footer{background:#150C08;color:rgba(242,233,216,.7);padding:64px 0 30px;}
 .btn-disabled .logo-chip{filter:grayscale(1) opacity(.5);}
 .soon-chip{display:inline-flex;align-items:center;margin-left:9px;background:var(--gold);color:var(--ink);font-family:'Oswald',sans-serif;font-size:9.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:3px 9px 3px 8px;border-radius:999px;white-space:nowrap;box-shadow:0 4px 10px -4px rgba(0,0,0,.35);}
 .soon-chip svg{width:9px;height:9px;margin-right:3px;flex:none;}
+.btn-wsp.btn-disabled{background:#c9d6cd;color:#7c8a80;box-shadow:none;}
+.sold-out-ribbon{position:absolute;top:18px;left:-34%;width:168%;padding:7px 0;background:var(--red);color:var(--cream-soft);font-family:'Oswald',sans-serif;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;text-align:center;transform:rotate(-40deg);box-shadow:0 4px 10px -3px rgba(0,0,0,.45);z-index:3;pointer-events:none;}
 .checkout-modal{position:fixed;inset:0;z-index:300;display:none;align-items:center;justify-content:center;padding:20px;}
 .checkout-modal.open{display:flex;}
 .checkout-modal-backdrop{position:absolute;inset:0;background:rgba(16,9,6,.66);backdrop-filter:blur(2px);}
@@ -1076,6 +1078,53 @@ if(typeof gsap !== 'undefined'){
     }
   }
 }
+</script>
+
+<!-- ================= INVENTARIO EN VIVO (Google Sheets) ================= -->
+<script>
+(function(){
+  // Pega aqui la URL de "Publicar en la web" (formato CSV) de tu Google Sheet de inventario.
+  const INVENTORY_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR7nKGrqsOUMrBoIEfY2qD6ut-v4wd82h8AKr6kyZ5_FYrnzXQHXvsuHgAKnbaf4-jo4Z3p2rWaXiFV/pub?gid=1526363085&single=true&output=csv';
+  if(!INVENTORY_CSV_URL) return;
+
+  function markSoldOut(container){
+    if(!container || container.classList.contains('sold-out')) return;
+    container.classList.add('sold-out');
+    const media = container.querySelector('.product-media, .variant-media');
+    if(media && !media.querySelector('.sold-out-ribbon')){
+      const ribbon = document.createElement('div');
+      ribbon.className = 'sold-out-ribbon';
+      ribbon.textContent = 'Agotado';
+      media.appendChild(ribbon);
+    }
+    container.querySelectorAll('a, button').forEach(function(el){
+      if(!el.classList.contains('btn-disabled')){
+        el.classList.add('btn-disabled');
+        el.setAttribute('aria-disabled','true');
+        el.setAttribute('tabindex','-1');
+        if(el.tagName === 'BUTTON') el.disabled = true;
+      }
+    });
+  }
+
+  fetch(INVENTORY_CSV_URL, {cache:'no-store'})
+    .then(function(res){ return res.text(); })
+    .then(function(text){
+      const lines = text.trim().split(/\r?\n/);
+      for(let i=1;i<lines.length;i++){
+        const cols = lines[i].split(',');
+        const id = (cols[0]||'').trim();
+        const stockRaw = (cols[1]||'').trim();
+        if(!id || stockRaw === '') continue;
+        const stock = Number(stockRaw);
+        if(!Number.isFinite(stock)) continue;
+        if(stock <= 0){
+          document.querySelectorAll('[data-product-id="'+id+'"]').forEach(markSoldOut);
+        }
+      }
+    })
+    .catch(function(){ /* si falla la consulta, la pagina sigue igual, sin marcar nada como agotado */ });
+})();
 </script>
 </body>
 </html>
