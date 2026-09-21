@@ -278,7 +278,10 @@ footer{background:#150C08;color:rgba(242,233,216,.7);padding:64px 0 30px;}
 
 <!-- ================= HERO ================= -->
 <section class="hero" id="top">
-  <div class="hero-media"><video id="heroImg" src="img/hero-video.mp4.mp4" poster="img/i005.jpg" autoplay muted playsinline preload="auto" aria-label="Comiendo un taco con Salsa La Taquera">Tu navegador no soporta video. <img src="img/i005.jpg" alt="Comiendo un taco con Salsa La Taquera"></video></div>
+  <div class="hero-media">
+    <video id="heroImg" src="img/hero-video.mp4.mp4" poster="img/i005.jpg" autoplay muted playsinline preload="auto" aria-label="Comiendo un taco con Salsa La Taquera"></video>
+    <img id="heroImgStill" src="img/i005.jpg" alt="Comiendo un taco con Salsa La Taquera" style="display:none;">
+  </div>
   <div class="hero-scrim"></div>
   <div class="hero-content">
     <div class="hero-inner">
@@ -647,6 +650,7 @@ revealEls.forEach(el=>io.observe(el));
 
 /* ---------- hero parallax (subtle) ---------- */
 const heroImg = document.getElementById('heroImg');
+const heroImgStill = document.getElementById('heroImgStill');
 const heroSection = document.getElementById('top');
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 let heroTicking = false;
@@ -655,9 +659,16 @@ function updateHeroParallax(){
   const progress = Math.min(1, Math.max(0, 1 - (rect.bottom / (rect.height + window.innerHeight))));
   const scale = 1.12 + progress*0.05;
   const ty = progress * 26;
-  heroImg.style.transform = 'scale(' + scale + ') translateY(' + ty + 'px)';
+  const t = 'scale(' + scale + ') translateY(' + ty + 'px)';
+  heroImg.style.transform = t;
+  heroImgStill.style.transform = t;
   heroTicking = false;
 }
+/* al terminar el video, se queda congelado en la foto original */
+heroImg.addEventListener('ended', function(){
+  heroImgStill.style.display = 'block';
+  heroImg.style.display = 'none';
+});
 if(!reduceMotion){
   document.addEventListener('scroll', ()=>{
     if(!heroTicking){ requestAnimationFrame(updateHeroParallax); heroTicking = true; }
