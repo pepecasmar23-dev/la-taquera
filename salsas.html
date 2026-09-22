@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Salsas · LA TAQUERA</title>
+<meta name="description" content="Salsa de Ajo La Taquera en 150 ml y 250 ml. Ajo fresco, picor medio, sabor callejero. Pide directo por WhatsApp.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Caveat:wght@600;700&family=Oswald:wght@500;600;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#F2E9D8;
+  --cream-soft:#FAF5EA;
+  --ink:#221A14;
+  --red:#C42A1F;
+  --red-dark:#8C1D15;
+  --red-darker:#601208;
+  --gold:#E3A63C;
+  --sauce:#CB4A1E;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:'Work Sans',sans-serif;overflow-x:hidden;}
+h1,h2,h3{font-family:'Anton',sans-serif;font-weight:400;letter-spacing:.01em;margin:0;text-transform:uppercase;}
+.script{font-family:'Caveat',cursive;}
+.label{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.14em;font-weight:600;}
+img{max-width:100%;display:block;}
+a{color:inherit;text-decoration:none;}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px;}
+button{font-family:inherit;cursor:pointer;}
+
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .6s cubic-bezier(.22,.61,.36,1),transform .6s cubic-bezier(.22,.61,.36,1);}
+.reveal.is-visible{opacity:1;transform:translateY(0);}
+.reveal-d1{transition-delay:.06s;}
+.reveal-d2{transition-delay:.12s;}
+.reveal-d3{transition-delay:.18s;}
+.reveal-d4{transition-delay:.24s;}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none;}}
+
+.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 28px;border-radius:999px;font-family:'Oswald',sans-serif;font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:14px;border:2px solid transparent;transition:transform .25s ease,box-shadow .25s ease,background .25s ease;}
+.btn:hover{transform:translateY(-3px);}
+.btn-wsp{background:#25D366;color:#0b3b1f;box-shadow:0 10px 24px -8px rgba(37,211,102,.55);}
+.btn-wsp:hover{box-shadow:0 16px 30px -8px rgba(37,211,102,.65);}
+.btn-red{background:var(--red);color:var(--cream-soft);box-shadow:0 10px 24px -8px rgba(196,42,31,.5);}
+.btn-red:hover{box-shadow:0 16px 30px -8px rgba(196,42,31,.6);}
+.btn-dark{background:var(--ink);color:var(--cream-soft);}
+.btn-outline-cream{background:transparent;border-color:var(--cream);color:var(--cream);}
+.btn-outline-cream:hover{background:rgba(242,233,216,.12);}
+.btn svg{width:18px;height:18px;flex:none;}
+
+/* ---------- nav (same pattern as the main site) ---------- */
+header.nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(242,233,216,.0);backdrop-filter:blur(0px);transition:background .35s ease,backdrop-filter .35s ease,box-shadow .35s ease,padding .3s ease;padding:18px 0;}
+header.nav.scrolled{background:rgba(242,233,216,.92);backdrop-filter:blur(10px);box-shadow:0 4px 24px -8px rgba(34,26,20,.15);padding:10px 0;}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;gap:20px;}
+.nav-brand{display:flex;align-items:center;gap:10px;}
+.nav-logo-swap{position:relative;display:inline-block;height:46px;width:46px;transition:height .3s ease,width .3s ease;}
+.nav-logo-swap img{position:absolute;top:0;left:0;height:100%;width:100%;transition:opacity .35s ease;}
+.nav-logo-swap .logo-ink-dark{opacity:0;}
+.nav-logo-swap .logo-ink-light{opacity:1;}
+header.nav.scrolled .nav-logo-swap{height:38px;width:38px;}
+header.nav.scrolled .logo-ink-dark{opacity:1;}
+header.nav.scrolled .logo-ink-light{opacity:0;}
+.nav-links{display:flex;align-items:center;gap:30px;}
+.nav-links a{font-family:'Oswald',sans-serif;font-size:13px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;position:relative;padding:4px 0;}
+.nav-links a::after{content:'';position:absolute;left:0;bottom:0;width:0;height:2px;background:var(--red);transition:width .3s ease;}
+.nav-links a:hover::after,.nav-links a.active::after{width:100%;}
+.nav-cta{display:flex;align-items:center;gap:14px;}
+.nav-toggle{display:none;background:none;border:none;padding:8px;}
+.nav-toggle span{display:block;width:24px;height:2px;background:var(--ink);margin:5px 0;transition:transform .3s ease,opacity .3s ease;}
+
+/* ---------- carrito ---------- */
+.cart-icon-btn{position:relative;display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;background:none;border:none;color:var(--ink);cursor:pointer;padding:0;margin-left:2px;transition:color .2s ease;}
+.cart-icon-btn:hover{color:var(--red);}
+.cart-icon-btn svg{width:22px;height:22px;}
+.cart-badge{position:absolute;top:-2px;right:-2px;min-width:17px;height:17px;padding:0 4px;border-radius:999px;background:var(--red);color:var(--cream-soft);font-family:'Oswald',sans-serif;font-size:10px;font-weight:700;display:none;align-items:center;justify-content:center;line-height:1;box-shadow:0 0 0 2px var(--cream);}
+.cart-badge.show{display:flex;}
+@keyframes cartBump{0%{transform:scale(1);}35%{transform:scale(1.3);}65%{transform:scale(.92);}100%{transform:scale(1);}}
+.cart-icon-btn.bump{animation:cartBump .45s ease;}
+.cart-backdrop{position:fixed;inset:0;background:rgba(16,9,6,.55);z-index:399;opacity:0;pointer-events:none;transition:opacity .35s ease;}
+.cart-backdrop.open{opacity:1;pointer-events:auto;}
+.cart-panel{position:fixed;top:0;right:0;bottom:0;width:400px;max-width:90vw;background:var(--cream-soft);z-index:400;display:flex;flex-direction:column;box-shadow:-24px 0 50px -20px rgba(16,9,6,.5);transform:translateX(100%);transition:transform .4s cubic-bezier(.22,.61,.36,1);}
+.cart-panel.open{transform:translateX(0);}
+.cart-panel-head{display:flex;align-items:center;justify-content:space-between;padding:22px 24px;border-bottom:1px solid rgba(34,26,20,.1);flex:none;}
+.cart-panel-head h3{font-size:20px;}
+.cart-panel-close{background:none;border:none;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--ink);cursor:pointer;transition:background .2s ease;padding:0;}
+.cart-panel-close:hover{background:rgba(34,26,20,.08);}
+.cart-panel-close svg{width:18px;height:18px;}
+.cart-panel-body{flex:1;overflow-y:auto;padding:6px 24px;}
+.cart-empty{display:flex;flex-direction:column;align-items:center;text-align:center;padding:60px 12px;color:rgba(34,26,20,.55);}
+.cart-empty svg{width:54px;height:54px;opacity:.32;margin-bottom:18px;}
+.cart-empty p{font-family:'Anton',sans-serif;font-weight:400;font-size:17px;text-transform:uppercase;color:var(--ink);margin:0 0 8px;}
+.cart-empty span{font-size:13.5px;max-width:220px;line-height:1.5;}
+.cart-item{display:flex;align-items:center;gap:13px;padding:16px 0;border-bottom:1px solid rgba(34,26,20,.08);}
+.cart-item-swatch{width:50px;height:50px;border-radius:12px;background:var(--gold);flex:none;display:flex;align-items:center;justify-content:center;color:var(--ink);font-family:'Anton',sans-serif;font-size:15px;overflow:hidden;}
+.cart-item-swatch img{width:100%;height:100%;object-fit:cover;}
+.cart-item-info{flex:1;min-width:0;}
+.cart-item-name{font-family:'Oswald',sans-serif;font-weight:600;font-size:13px;text-transform:uppercase;letter-spacing:.02em;margin-bottom:2px;}
+.cart-item-variant{font-size:11.5px;color:rgba(34,26,20,.55);margin-bottom:5px;}
+.cart-item-price{font-family:'Oswald',sans-serif;font-weight:600;font-size:12.5px;color:var(--red);}
+.cart-item-qty{display:flex;align-items:center;gap:8px;flex:none;}
+.qty-btn{width:25px;height:25px;border-radius:50%;border:1px solid rgba(34,26,20,.2);background:var(--cream);color:var(--ink);display:flex;align-items:center;justify-content:center;font-size:15px;line-height:1;cursor:pointer;transition:background .2s ease,border-color .2s ease,color .2s ease;padding:0;}
+.qty-btn:hover{background:var(--red);border-color:var(--red);color:var(--cream-soft);}
+.cart-item-qty span{font-family:'Oswald',sans-serif;font-weight:600;font-size:13px;min-width:14px;text-align:center;}
+.cart-item-remove{background:none;border:none;color:rgba(34,26,20,.4);cursor:pointer;padding:6px;flex:none;transition:color .2s ease;}
+.cart-item-remove:hover{color:var(--red);}
+.cart-item-remove svg{width:16px;height:16px;}
+.cart-panel-foot{padding:18px 24px 24px;border-top:1px solid rgba(34,26,20,.1);flex:none;}
+.cart-subtotal{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.06em;font-size:12.5px;}
+.cart-subtotal strong{font-family:'Anton',sans-serif;font-weight:400;font-size:20px;text-transform:none;letter-spacing:0;color:var(--red);}
+.cart-checkout{width:100%;justify-content:center;}
+.cart-note{margin:12px 0 0;font-size:11px;color:rgba(34,26,20,.5);text-align:center;line-height:1.5;}
+@media (max-width:560px){.cart-panel{width:100%;max-width:100%;}}
+@media (max-width:900px){
+  .nav-links{display:none;}
+  .nav-toggle{display:block;}
+  .nav-cta .btn-wsp span.full{display:none;}
+}
+@media (max-width:560px){.nav-cta .btn-wsp{display:none;}}
+
+/* ---------- hero ---------- */
+.sh-hero{position:relative;min-height:92vh;display:flex;align-items:flex-end;overflow:hidden;background:var(--ink);}
+.sh-hero-media{position:absolute;inset:0;overflow:hidden;}
+.sh-hero-media img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;transform:scale(1.08);}
+.sh-hero-scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(34,20,16,.55) 0%,rgba(34,20,16,.3) 32%,rgba(24,14,10,.6) 66%,rgba(16,9,6,.94) 100%);}
+.sh-hero-content{position:relative;z-index:2;width:100%;padding:150px 24px 74px;color:var(--cream-soft);}
+.sh-hero-inner{max-width:1180px;margin:0 auto;}
+.sh-hero .eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(242,233,216,.12);border:1px solid rgba(242,233,216,.35);padding:7px 16px;border-radius:999px;font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;margin-bottom:22px;color:var(--gold);}
+.sh-hero h1{font-size:clamp(40px,8vw,92px);line-height:.94;color:var(--cream-soft);}
+.sh-hero h1 .accent{color:var(--red);}
+.sh-hero-sub{max-width:560px;font-size:17.5px;line-height:1.65;color:rgba(242,233,216,.85);margin:22px 0 34px;}
+.sh-hero-ctas{display:flex;flex-wrap:wrap;gap:16px;}
+
+/* ---------- marquee ---------- */
+.marquee{background:var(--ink);color:var(--cream);padding:16px 0;overflow:hidden;border-top:1px solid rgba(242,233,216,.12);border-bottom:1px solid rgba(242,233,216,.12);}
+.marquee-track{display:flex;width:max-content;animation:marquee 26s linear infinite;}
+.marquee-track span{display:flex;align-items:center;font-family:'Oswald',sans-serif;font-size:15px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;white-space:nowrap;padding:0 26px;}
+.marquee-track span::after{content:'✦';margin-left:26px;color:var(--red);font-size:12px;}
+@keyframes marquee{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+@media (prefers-reduced-motion:reduce){.marquee-track{animation:none;}}
+
+/* ---------- section shells ---------- */
+section{position:relative;}
+.section-pad{padding:110px 0;}
+.section-head{max-width:640px;margin-bottom:52px;}
+.eyebrow{font-family:'Oswald',sans-serif;font-size:13px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;color:var(--red);display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+.eyebrow::before{content:'';width:28px;height:2px;background:var(--red);}
+.section-head h2{font-size:clamp(32px,5.2vw,52px);line-height:1;}
+.section-head p{font-size:16.5px;line-height:1.7;color:rgba(34,26,20,.72);margin-top:16px;max-width:520px;}
+
+/* ---------- sauce cards (campaign spread) ---------- */
+.sauce-grid{display:grid;grid-template-columns:1fr 1fr;gap:34px;}
+.sauce-card{position:relative;border-radius:28px;overflow:hidden;background:var(--red-darker);color:var(--cream-soft);box-shadow:0 30px 60px -26px rgba(34,26,20,.5);display:flex;flex-direction:column;}
+.sauce-card-media{position:relative;aspect-ratio:4/5;overflow:hidden;background:#e6dcc8;}
+.sauce-card-media img{width:100%;height:100%;object-fit:cover;transition:transform .7s cubic-bezier(.2,.8,.2,1);}
+.sauce-card:hover .sauce-card-media img{transform:scale(1.06);}
+.sauce-card-media-scrim{position:absolute;inset:0;background:linear-gradient(0deg,rgba(20,5,2,.86) 0%,rgba(20,5,2,0) 42%);}
+.sauce-price-tag{position:absolute;top:20px;right:20px;z-index:3;background:var(--gold);color:var(--ink);width:84px;height:84px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;transform:rotate(9deg);box-shadow:0 14px 24px -8px rgba(0,0,0,.45);}
+.sauce-price-tag .amt{font-family:'Anton',sans-serif;font-size:20px;line-height:1;}
+.sauce-price-tag .cur{font-family:'Oswald',sans-serif;font-size:8.5px;letter-spacing:.08em;font-weight:600;}
+.sauce-card-size{position:absolute;left:20px;bottom:16px;z-index:3;font-family:'Oswald',sans-serif;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--gold);}
+.sauce-card-body{padding:26px 26px 30px;flex:1;display:flex;flex-direction:column;}
+.sauce-card-body h3{font-size:clamp(24px,3vw,30px);line-height:1;margin-bottom:12px;}
+.sauce-card-body p{font-size:14.5px;line-height:1.65;color:rgba(242,233,216,.82);margin:0 0 20px;}
+.spec-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:24px;}
+.spec-chip{display:flex;align-items:center;gap:7px;background:rgba(242,233,216,.12);border:1px solid rgba(242,233,216,.3);padding:8px 14px;border-radius:999px;font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:.06em;text-transform:uppercase;}
+.spec-chip svg{width:13px;height:13px;color:var(--gold);flex:none;}
+.sauce-card-ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:auto;}
+.sauce-card .btn-dark{background:var(--cream-soft);color:var(--ink);}
+.sauce-card .btn-dark:hover{background:var(--gold);}
+.sold-out-ribbon{position:absolute;top:22px;left:-34%;width:168%;padding:7px 0;background:var(--red);color:var(--cream-soft);font-family:'Oswald',sans-serif;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;text-align:center;transform:rotate(-40deg);box-shadow:0 4px 10px -3px rgba(0,0,0,.45);z-index:4;pointer-events:none;}
+@media (max-width:860px){.sauce-grid{grid-template-columns:1fr;}}
+
+/* ---------- comparativa ---------- */
+.compare{background:var(--cream-soft);}
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.compare-card{background:var(--cream);border:1px solid rgba(34,26,20,.1);border-radius:20px;padding:28px 26px;}
+.compare-card h3{font-family:'Oswald',sans-serif;font-size:14px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--red);margin-bottom:14px;}
+.compare-card ul{margin:0;padding:0;list-style:none;}
+.compare-card li{display:flex;gap:10px;font-size:14.5px;line-height:1.6;color:rgba(34,26,20,.78);margin-bottom:10px;}
+.compare-card li svg{width:16px;height:16px;flex:none;color:var(--gold);margin-top:2px;}
+@media (max-width:760px){.compare-grid{grid-template-columns:1fr;}}
+
+/* ---------- galeria breve ---------- */
+.gallery{background:var(--cream);}
+.gallery-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;}
+.gallery-chip{position:relative;border-radius:18px;overflow:hidden;aspect-ratio:16/10;box-shadow:0 18px 34px -18px rgba(34,26,20,.4);}
+.gallery-chip img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease;}
+.gallery-chip:hover img{transform:scale(1.07);}
+.gallery-chip-label{position:absolute;left:0;right:0;bottom:0;padding:14px 16px;background:linear-gradient(0deg,rgba(16,9,6,.82),transparent);color:var(--cream-soft);font-family:'Oswald',sans-serif;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;}
+@media (max-width:700px){.gallery-grid{grid-template-columns:1fr;}}
+
+/* ---------- final cta ---------- */
+.final-cta{background:var(--red);color:var(--cream-soft);text-align:center;padding:120px 0;}
+.final-cta h2{font-size:clamp(36px,6.6vw,78px);line-height:.95;margin-bottom:24px;}
+.final-cta p{font-size:17px;color:rgba(242,233,216,.85);max-width:480px;margin:0 auto 38px;}
+.final-cta .btn-wsp{font-size:15px;padding:18px 36px;}
+
+/* ---------- footer ---------- */
+footer{background:#150C08;color:rgba(242,233,216,.7);padding:64px 0 30px;}
+.footer-top{display:flex;justify-content:space-between;flex-wrap:wrap;gap:40px;margin-bottom:50px;}
+.footer-brand{display:flex;align-items:center;gap:12px;}
+.footer-brand img{height:52px;width:auto;}
+.footer-brand .tag{font-family:'Caveat',cursive;font-size:17px;color:rgba(242,233,216,.6);}
+.footer-cols{display:flex;gap:70px;flex-wrap:wrap;}
+.footer-col h4{font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;}
+.footer-col a{display:block;font-size:14px;margin-bottom:10px;color:rgba(242,233,216,.75);transition:color .2s ease;}
+.footer-col a:hover{color:var(--cream-soft);}
+.footer-bottom{border-top:1px solid rgba(242,233,216,.12);padding-top:24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:12.5px;color:rgba(242,233,216,.45);}
+
+/* ---------- fab ---------- */
+.fab{position:fixed;bottom:26px;right:26px;z-index:90;width:60px;height:60px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;box-shadow:0 14px 30px -8px rgba(37,211,102,.6);opacity:0;transform:translateY(16px) scale(.8);pointer-events:none;transition:opacity .35s ease,transform .35s ease;}
+.fab.show{opacity:1;transform:translateY(0) scale(1);pointer-events:auto;}
+.fab svg{width:30px;height:30px;color:#0b3b1f;}
+.fab:hover{transform:translateY(-3px) scale(1.05);}
+
+/* ---------- cursor: la mascota de ajo sustituye al puntero ---------- */
+.cursor-sticker{position:fixed;top:0;left:0;width:54px;height:auto;pointer-events:none;z-index:199;opacity:0;will-change:transform;filter:drop-shadow(0 10px 18px rgba(0,0,0,.4));}
+@media (hover:hover) and (pointer:fine){
+  body{cursor:none;}
+  input,textarea,select{cursor:text;}
+}
+@media (hover:none),(pointer:coarse){.cursor-sticker{display:none;}}
+
+@media (max-width:600px){
+  .section-pad{padding:78px 0;}
+}
+</style>
+</head>
+<body>
+
+<img class="cursor-sticker" id="cursorSticker" src="img/i000.png" data-default="img/i001.png" data-fire="img/i002.png" alt="" aria-hidden="true">
+
+<!-- ================= NAV ================= -->
+<header class="nav" id="nav">
+  <div class="wrap nav-inner">
+    <a href="index.html#top" class="nav-brand">
+      <span class="nav-logo-swap">
+        <img class="logo-ink-dark" src="img/i003.png" alt="La Taquera">
+        <img class="logo-ink-light" src="img/i004.png" alt="La Taquera">
+      </span>
+    </a>
+    <button class="cart-icon-btn" id="cartIconBtn" aria-label="Ver carrito" aria-haspopup="dialog">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l-1 13a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L6 7Z"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/></svg>
+      <span class="cart-badge" id="cartBadge">0</span>
+    </button>
+    <nav class="nav-links">
+      <a href="index.html#top">Inicio</a>
+      <a href="index.html#sazon">El Sazón</a>
+      <a href="salsas.html" class="active">Salsas</a>
+      <a href="index.html#comprar">Dónde comprar</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-wsp" href="https://wa.me/5218448930881?text=Hola%2C%20quiero%20pedir%20Salsa%20La%20Taquera" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.06-1.33A9.94 9.94 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2Zm0 18c-1.6 0-3.1-.43-4.4-1.2l-.32-.19-3.01.79.8-2.93-.2-.3A7.96 7.96 0 0 1 4 12c0-4.41 3.59-8 8-8s8 3.59 8 8-3.59 8-8 8Zm4.4-5.9c-.24-.12-1.43-.7-1.65-.79-.22-.08-.38-.12-.54.12-.16.24-.62.79-.76.95-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.44-1.34-1.68-.14-.24-.02-.37.1-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.3-.74-1.78-.2-.47-.4-.4-.54-.41h-.46c-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.7 2.6 4.12 3.64.58.25 1.03.4 1.38.51.58.18 1.11.16 1.53.1.47-.07 1.43-.58 1.63-1.15.2-.56.2-1.04.14-1.15-.06-.1-.22-.16-.46-.28Z"/></svg>
+        <span class="full">Pedir por WhatsApp</span>
+      </a>
+      <button class="nav-toggle" aria-label="Menú"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<!-- ================= CARRITO ================= -->
+<div class="cart-backdrop" id="cartBackdrop"></div>
+<aside class="cart-panel" id="cartPanel" role="dialog" aria-label="Tu carrito" aria-hidden="true">
+  <div class="cart-panel-head">
+    <h3>Tu carrito</h3>
+    <button class="cart-panel-close" id="cartCloseBtn" aria-label="Cerrar carrito">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button>
+  </div>
+  <div class="cart-panel-body" id="cartPanelBody"></div>
+  <div class="cart-panel-foot" id="cartPanelFoot"></div>
+</aside>
+
+<!-- ================= HERO ================= -->
+<section class="sh-hero">
+  <div class="sh-hero-media"><img src="img/i009.jpg" alt="Salsa La Taquera junto a un taco"></div>
+  <div class="sh-hero-scrim"></div>
+  <div class="sh-hero-content">
+    <div class="sh-hero-inner">
+      <div class="eyebrow reveal">Salsa de ajo · dos presentaciones</div>
+      <h1 class="reveal reveal-d1">DOS TAMAÑOS.<br>UN SOLO<span class="accent"> SAZÓN.</span></h1>
+      <p class="sh-hero-sub reveal reveal-d2">La misma receta de siempre —ajo fresco, chile tostado y picor medio— ahora en la presentación que mejor le quede a tu mesa: 150&nbsp;ml para el día a día o 250&nbsp;ml para que nunca se acabe a media semana.</p>
+      <div class="sh-hero-ctas reveal reveal-d3">
+        <a class="btn btn-wsp" href="#presentaciones">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+          Ver las presentaciones
+        </a>
+        <a class="btn btn-outline-cream" href="https://wa.me/5218448930881?text=Hola%2C%20quiero%20pedir%20Salsa%20La%20Taquera" target="_blank" rel="noopener">
+          Pedir por WhatsApp
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= MARQUEE ================= -->
+<div class="marquee">
+  <div class="marquee-track" id="marqueeTrack">
+    <span>150 ML Y 250 ML · CON AJO FRESCO · PICOR MEDIO · SABOR CALLEJERO · HECHA EN CASA ·</span>
+    <span>150 ML Y 250 ML · CON AJO FRESCO · PICOR MEDIO · SABOR CALLEJERO · HECHA EN CASA ·</span>
+  </div>
+</div>
+
+<!-- ================= PRESENTACIONES ================= -->
+<section class="section-pad" id="presentaciones">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">Elige tu presentación</div>
+      <h2>La misma botella<br>en dos tamaños.</h2>
+      <p>Ambas salen de la misma tanda, con el mismo ajo fresco y el mismo picor medio. Solo cambia cuánto te dura.</p>
+    </div>
+
+    <div class="sauce-grid">
+      <!-- 150 ML -->
+      <div class="sauce-card reveal reveal-d1" data-product-id="salsa-150">
+        <div class="sauce-card-media">
+          <img src="img/i010.jpg" alt="Salsa La Taquera 150 ml">
+          <div class="sauce-card-media-scrim"></div>
+          <div class="sauce-price-tag"><span class="amt">$49</span><span class="cur">MXN</span></div>
+          <div class="sauce-card-size">150 ml · Individual</div>
+        </div>
+        <div class="sauce-card-body">
+          <h3>La de todos los días.</h3>
+          <p>El tamaño que cabe en cualquier refri, en cualquier lonchera y en cualquier antojo entre semana.</p>
+          <div class="spec-row">
+            <div class="spec-chip"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>Con ajo fresco</div>
+            <div class="spec-chip"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>Picor medio</div>
+            <div class="spec-chip"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>Cont. Net 150 ml</div>
+          </div>
+          <div class="sauce-card-ctas">
+            <button type="button" class="btn btn-dark" data-add-to-cart="salsa-150" data-cart-name="Salsa de Ajo La Taquera 150ml" data-cart-price="49">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l-1 13a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L6 7Z"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/></svg>
+              Agregar al carrito
+            </button>
+            <a class="btn btn-wsp" href="https://wa.me/5218448930881?text=Hola%2C%20quiero%20pedir%20Salsa%20La%20Taquera%20150ml" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.06-1.33A9.94 9.94 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2Zm0 18c-1.6 0-3.1-.43-4.4-1.2l-.32-.19-3.01.79.8-2.93-.2-.3A7.96 7.96 0 0 1 4 12c0-4.41 3.59-8 8-8s8 3.59 8 8-3.59 8-8 8Zm4.4-5.9c-.24-.12-1.43-.7-1.65-.79-.22-.08-.38-.12-.54.12-.16.24-.62.79-.76.95-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.44-1.34-1.68-.14-.24-.02-.37.1-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.3-.74-1.78-.2-.47-.4-.4-.54-.41h-.46c-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.7 2.6 4.12 3.64.58.25 1.03.4 1.38.51.58.18 1.11.16 1.53.1.47-.07 1.43-.58 1.63-1.15.2-.56.2-1.04.14-1.15-.06-.1-.22-.16-.46-.28Z"/></svg>
+              WhatsApp
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 250 ML -->
+      <div class="sauce-card reveal reveal-d2" data-product-id="salsa-250">
+        <div class="sauce-card-media">
+          <img src="img/i016.jpg" alt="Salsa La Taquera 250 ml" style="object-position:50% 18%;">
+          <div class="sauce-card-media-scrim"></div>
+          <div class="sauce-price-tag"><span class="amt">$79</span><span class="cur">MXN</span></div>
+          <div class="sauce-card-size">250 ml · Familiar</div>
+        </div>
+        <div class="sauce-card-body">
+          <h3>La que no se acaba.</h3>
+          <p>Para la casa que le pone salsa a todo, para compartir o para no andar reponiendo cada semana.</p>
+          <div class="spec-row">
+            <div class="spec-chip"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>Con ajo fresco</div>
+            <div class="spec-chip"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>Picor medio</div>
+            <div class="spec-chip"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>Cont. Net 250 ml</div>
+          </div>
+          <div class="sauce-card-ctas">
+            <button type="button" class="btn btn-dark" data-add-to-cart="salsa-250" data-cart-name="Salsa de Ajo La Taquera 250ml" data-cart-price="79">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l-1 13a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L6 7Z"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/></svg>
+              Agregar al carrito
+            </button>
+            <a class="btn btn-wsp" href="https://wa.me/5218448930881?text=Hola%2C%20quiero%20pedir%20Salsa%20La%20Taquera%20250ml" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.06-1.33A9.94 9.94 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2Zm0 18c-1.6 0-3.1-.43-4.4-1.2l-.32-.19-3.01.79.8-2.93-.2-.3A7.96 7.96 0 0 1 4 12c0-4.41 3.59-8 8-8s8 3.59 8 8-3.59 8-8 8Zm4.4-5.9c-.24-.12-1.43-.7-1.65-.79-.22-.08-.38-.12-.54.12-.16.24-.62.79-.76.95-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.44-1.34-1.68-.14-.24-.02-.37.1-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.3-.74-1.78-.2-.47-.4-.4-.54-.41h-.46c-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.7 2.6 4.12 3.64.58.25 1.03.4 1.38.51.58.18 1.11.16 1.53.1.47-.07 1.43-.58 1.63-1.15.2-.56.2-1.04.14-1.15-.06-.1-.22-.16-.46-.28Z"/></svg>
+              WhatsApp
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= COMPARATIVA ================= -->
+<section class="compare section-pad">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">¿Cuál te conviene?</div>
+      <h2>150 ml o 250 ml.</h2>
+      <p>Las dos tienen exactamente el mismo sazón. La diferencia es para quién y para cuándo.</p>
+    </div>
+    <div class="compare-grid">
+      <div class="compare-card reveal reveal-d1">
+        <h3>150 ml · $49 MXN</h3>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Ideal si vives solo o es tu primera vez probándola.</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Perfecta para llevar en la lonchera o la mochila.</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Fácil de guardar en cualquier puerta de refri.</li>
+        </ul>
+      </div>
+      <div class="compare-card reveal reveal-d2">
+        <h3>250 ml · $79 MXN</h3>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Pensada para la familia o para compartir en la mesa.</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Te dura más, ideal si ya la conoces y no piensas dejarla.</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Mejor rendimiento por mililitro.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= GALERIA BREVE ================= -->
+<section class="gallery section-pad">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">Hecha en casa</div>
+      <h2>El mismo sazón,<br>en tandas pequeñas.</h2>
+      <p>Ajo fresco de verdad, chile tostado y el picor justo. Nada que suene a receta secreta rara, nomás la que sabe a puesto de tacos.</p>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-chip reveal reveal-d1"><img src="img/i006.jpg" alt="La Taquera en el anaquel"><div class="gallery-chip-label">En el anaquel</div></div>
+      <div class="gallery-chip reveal reveal-d2"><img src="img/i007.jpg" alt="La Taquera en el refri"><div class="gallery-chip-label">En tu refri</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FINAL CTA ================= -->
+<section class="final-cta">
+  <div class="wrap">
+    <h2 class="reveal">¿Cuál te<br>va a tocar?</h2>
+    <p class="reveal reveal-d1">Dinos qué tamaño quieres por WhatsApp y te confirmamos disponibilidad y envío al toque.</p>
+    <a class="btn btn-wsp reveal reveal-d2" href="https://wa.me/5218448930881?text=Hola%2C%20quiero%20pedir%20Salsa%20La%20Taquera" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.06-1.33A9.94 9.94 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2Zm0 18c-1.6 0-3.1-.43-4.4-1.2l-.32-.19-3.01.79.8-2.93-.2-.3A7.96 7.96 0 0 1 4 12c0-4.41 3.59-8 8-8s8 3.59 8 8-3.59 8-8 8Zm4.4-5.9c-.24-.12-1.43-.7-1.65-.79-.22-.08-.38-.12-.54.12-.16.24-.62.79-.76.95-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.44-1.34-1.68-.14-.24-.02-.37.1-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.3-.74-1.78-.2-.47-.4-.4-.54-.41h-.46c-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.7 2.6 4.12 3.64.58.25 1.03.4 1.38.51.58.18 1.11.16 1.53.1.47-.07 1.43-.58 1.63-1.15.2-.56.2-1.04.14-1.15-.06-.1-.22-.16-.46-.28Z"/></svg>
+      Pedir por WhatsApp
+    </a>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img src="img/i015.png" alt="La Taquera">
+        <span class="tag">sabor callejero</span>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h4>Navegar</h4>
+          <a href="index.html#top">Inicio</a>
+          <a href="index.html#sazon">El Sazón</a>
+          <a href="salsas.html">Salsas</a>
+          <a href="index.html#comprar">Dónde comprar</a>
+        </div>
+        <div class="footer-col">
+          <h4>Comprar</h4>
+          <a href="https://wa.me/5218448930881?text=Hola%2C%20quiero%20pedir%20Salsa%20La%20Taquera" target="_blank" rel="noopener">WhatsApp</a>
+          <a href="catalogo.html">Merch</a>
+        </div>
+        <div class="footer-col">
+          <h4>Contacto</h4>
+          <a href="mailto:lataquerainfo@gmail.com">lataquerainfo@gmail.com</a>
+        </div>
+        <div class="footer-col">
+          <h4>Síguenos</h4>
+          <a href="#" target="_blank" rel="noopener">Instagram</a>
+          <a href="#" target="_blank" rel="noopener">TikTok</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> La Taquera. Todos los derechos reservados.</span>
+      <span>Hecha con ajo fresco, en casa.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ================= FAB ================= -->
+<a class="fab" id="fab" href="https://wa.me/5218448930881?text=Hola%2C%20quiero%20pedir%20Salsa%20La%20Taquera" target="_blank" rel="noopener" aria-label="Pedir por WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.06-1.33A9.94 9.94 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2Zm0 18c-1.6 0-3.1-.43-4.4-1.2l-.32-.19-3.01.79.8-2.93-.2-.3A7.96 7.96 0 0 1 4 12c0-4.41 3.59-8 8-8s8 3.59 8 8-3.59 8-8 8Zm4.4-5.9c-.24-.12-1.43-.7-1.65-.79-.22-.08-.38-.12-.54.12-.16.24-.62.79-.76.95-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.44-1.34-1.68-.14-.24-.02-.37.1-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.3-.74-1.78-.2-.47-.4-.4-.54-.41h-.46c-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.7 2.6 4.12 3.64.58.25 1.03.4 1.38.51.58.18 1.11.16 1.53.1.47-.07 1.43-.58 1.63-1.15.2-.56.2-1.04.14-1.15-.06-.1-.22-.16-.46-.28Z"/></svg>
+</a>
+
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+
+const nav = document.getElementById('nav');
+const fab = document.getElementById('fab');
+function onScrollUI(){
+  const y = window.scrollY;
+  nav.classList.toggle('scrolled', y > 40);
+  if(fab) fab.classList.toggle('show', y > 200);
+}
+document.addEventListener('scroll', onScrollUI, {passive:true});
+onScrollUI();
+
+const revealEls = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){ e.target.classList.add('is-visible'); io.unobserve(e.target); }
+  });
+},{threshold:0.12, rootMargin:'0px 0px -6% 0px'});
+revealEls.forEach(el=>io.observe(el));
+
+const navToggle = document.querySelector('.nav-toggle');
+const navLinksEl = document.querySelector('.nav-links');
+if(navToggle){
+  navToggle.addEventListener('click', ()=>{
+    const open = navLinksEl.style.display === 'flex';
+    navLinksEl.style.display = open ? 'none' : 'flex';
+    if(!open){
+      navLinksEl.style.position='absolute';
+      navLinksEl.style.top='100%';
+      navLinksEl.style.left='0';
+      navLinksEl.style.right='0';
+      navLinksEl.style.background='var(--cream-soft)';
+      navLinksEl.style.flexDirection='column';
+      navLinksEl.style.padding='20px 24px';
+      navLinksEl.style.gap='16px';
+      navLinksEl.style.boxShadow='0 12px 24px -12px rgba(0,0,0,.25)';
+    }
+  });
+}
+
+/* tilt on hover for sauce cards (mouse-follow, desktop only) */
+if(window.matchMedia('(hover:hover) and (pointer:fine)').matches){
+  document.querySelectorAll('.sauce-card').forEach(card=>{
+    card.addEventListener('mousemove', (e)=>{
+      const r = card.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width - 0.5;
+      const py = (e.clientY - r.top) / r.height - 0.5;
+      card.style.transform = 'perspective(900px) rotateY(' + (px*4) + 'deg) rotateX(' + (py*-4) + 'deg) translateY(-4px)';
+    });
+    card.addEventListener('mouseleave', ()=>{ card.style.transform = ''; });
+  });
+}
+
+/* ---------- cursor: la mascota de ajo sustituye al puntero ---------- */
+(function(){
+  const cursorSticker = document.getElementById("cursorSticker");
+  const isTouch = window.matchMedia("(hover:none), (pointer:coarse)").matches;
+  if(!cursorSticker || isTouch) return;
+
+  const lerp = (a, b, t) => a + (b - a) * t;
+  let mx = window.innerWidth/2, my = window.innerHeight/2, sx = mx, sy = my;
+  let shown = false, hovering = false, rot = -10;
+
+  document.addEventListener("mousemove", (e)=>{
+    mx = e.clientX; my = e.clientY;
+    if(!shown){ cursorSticker.style.opacity = "1"; shown = true; }
+  });
+
+  function stickerLoop(){
+    const prevSx = sx;
+    sx = lerp(sx, mx, 0.22);
+    sy = lerp(sy, my, 0.22);
+    const dx = sx - prevSx;
+    const targetRot = Math.max(-20, Math.min(20, dx * 2.4)) - 10;
+    rot = lerp(rot, targetRot, 0.15);
+    const scale = hovering ? 1.16 : 1;
+    cursorSticker.style.transform = "translate(" + sx + "px," + sy + "px) translate(-50%,-58%) rotate(" + rot + "deg) scale(" + scale + ")";
+    requestAnimationFrame(stickerLoop);
+  }
+  stickerLoop();
+
+  document.querySelectorAll("a, button, .sauce-card").forEach(el=>{
+    el.addEventListener("mouseenter", ()=> hovering = true);
+    el.addEventListener("mouseleave", ()=> hovering = false);
+  });
+
+  const srcDefault = cursorSticker.getAttribute("data-default");
+  const srcFire = cursorSticker.getAttribute("data-fire");
+  document.querySelectorAll("button, .btn, .fab").forEach(el=>{
+    el.addEventListener("mouseenter", ()=>{ if(srcFire) cursorSticker.src = srcFire; });
+    el.addEventListener("mouseleave", ()=>{ if(srcDefault) cursorSticker.src = srcDefault; });
+  });
+})();
+</script>
+
+<!-- ================= INVENTARIO EN VIVO (Google Sheets) ================= -->
+<script>
+(function(){
+  // Misma hoja de Google Sheets que index.html y catalogo.html.
+  const INVENTORY_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR7nKGrqsOUMrBoIEfY2qD6ut-v4wd82h8AKr6kyZ5_FYrnzXQHXvsuHgAKnbaf4-jo4Z3p2rWaXiFV/pub?gid=1526363085&single=true&output=csv';
+  if(!INVENTORY_CSV_URL) return;
+
+  function markSoldOut(container){
+    if(!container || container.classList.contains('sold-out')) return;
+    container.classList.add('sold-out');
+    const media = container.querySelector('.product-media, .variant-media, .sauce-card-media');
+    if(media && !media.querySelector('.sold-out-ribbon')){
+      const ribbon = document.createElement('div');
+      ribbon.className = 'sold-out-ribbon';
+      ribbon.textContent = 'Agotado';
+      media.appendChild(ribbon);
+    }
+    container.querySelectorAll('a, button').forEach(function(el){
+      if(!el.classList.contains('btn-disabled')){
+        el.classList.add('btn-disabled');
+        el.setAttribute('aria-disabled','true');
+        el.setAttribute('tabindex','-1');
+        if(el.tagName === 'BUTTON') el.disabled = true;
+      }
+    });
+  }
+
+  fetch(INVENTORY_CSV_URL, {cache:'no-store'})
+    .then(function(res){ return res.text(); })
+    .then(function(text){
+      const lines = text.trim().split(/\r?\n/);
+      for(let i=1;i<lines.length;i++){
+        const cols = lines[i].split(',');
+        const id = (cols[0]||'').trim();
+        const stockRaw = (cols[1]||'').trim();
+        if(!id || stockRaw === '') continue;
+        const stock = Number(stockRaw);
+        if(!Number.isFinite(stock)) continue;
+        if(stock <= 0){
+          document.querySelectorAll('[data-product-id="'+id+'"]').forEach(markSoldOut);
+        }
+      }
+    })
+    .catch(function(){ /* si falla la consulta, la pagina sigue igual, sin marcar nada como agotado */ });
+})();
+</script>
+
+<!-- ================= CARRITO (logica) ================= -->
+<script>
+(function(){
+  const CART_KEY = 'laTaqueraCart';
+  const WHATSAPP_NUMBER = '5218448930881';
+
+  function getCart(){
+    try{ return JSON.parse(localStorage.getItem(CART_KEY)) || []; }
+    catch(e){ return []; }
+  }
+  function saveCart(cart){
+    try{ localStorage.setItem(CART_KEY, JSON.stringify(cart)); }catch(e){}
+  }
+
+  const cartIconBtn = document.getElementById('cartIconBtn');
+  const cartBadge = document.getElementById('cartBadge');
+  const cartPanel = document.getElementById('cartPanel');
+  const cartBackdrop = document.getElementById('cartBackdrop');
+  const cartCloseBtn = document.getElementById('cartCloseBtn');
+  const cartBody = document.getElementById('cartPanelBody');
+  const cartFoot = document.getElementById('cartPanelFoot');
+
+  function openCart(){
+    if(!cartPanel) return;
+    cartPanel.classList.add('open');
+    cartBackdrop.classList.add('open');
+    cartPanel.setAttribute('aria-hidden','false');
+  }
+  function closeCart(){
+    if(!cartPanel) return;
+    cartPanel.classList.remove('open');
+    cartBackdrop.classList.remove('open');
+    cartPanel.setAttribute('aria-hidden','true');
+  }
+  if(cartIconBtn) cartIconBtn.addEventListener('click', function(){ renderCart(); openCart(); });
+  if(cartCloseBtn) cartCloseBtn.addEventListener('click', closeCart);
+  if(cartBackdrop) cartBackdrop.addEventListener('click', closeCart);
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeCart(); });
+
+  const emptyIconSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l-1 13a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L6 7Z"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/></svg>';
+  const trashSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2m-9 0 1 13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-13"/></svg>';
+
+  function money(n){ return '$' + n.toLocaleString('es-MX') + ' MXN'; }
+
+  function renderCart(){
+    const cart = getCart();
+    const count = cart.reduce(function(n,i){ return n + i.qty; }, 0);
+    if(cartBadge){
+      cartBadge.textContent = count;
+      cartBadge.classList.toggle('show', count > 0);
+    }
+    if(!cartBody) return;
+
+    if(cart.length === 0){
+      cartBody.innerHTML = '<div class="cart-empty">' + emptyIconSvg + '<p>Tu carrito está vacío</p><span>Agrega salsa o mercancía para armar tu pedido.</span></div>';
+      if(cartFoot) cartFoot.innerHTML = '';
+      return;
+    }
+
+    let itemsHtml = '';
+    let subtotal = 0;
+    cart.forEach(function(item){
+      subtotal += item.price * item.qty;
+      itemsHtml += '' +
+        '<div class="cart-item" data-id="' + item.id + '">' +
+          '<div class="cart-item-swatch">' + (item.img ? '<img src="' + item.img + '" alt="">' : (item.initial || '')) + '</div>' +
+          '<div class="cart-item-info">' +
+            '<div class="cart-item-name">' + item.name + '</div>' +
+            (item.variant ? '<div class="cart-item-variant">' + item.variant + '</div>' : '') +
+            '<div class="cart-item-price">' + money(item.price) + '</div>' +
+          '</div>' +
+          '<div class="cart-item-qty">' +
+            '<button class="qty-btn" data-action="dec" aria-label="Quitar uno">−</button>' +
+            '<span>' + item.qty + '</span>' +
+            '<button class="qty-btn" data-action="inc" aria-label="Agregar uno">+</button>' +
+          '</div>' +
+          '<button class="cart-item-remove" data-action="remove" aria-label="Eliminar">' + trashSvg + '</button>' +
+        '</div>';
+    });
+    cartBody.innerHTML = itemsHtml;
+
+    if(cartFoot){
+      cartFoot.innerHTML = '' +
+        '<div class="cart-subtotal"><span>Subtotal</span><strong>' + money(subtotal) + '</strong></div>' +
+        '<button class="btn btn-red cart-checkout" id="cartCheckoutBtn">Confirmar pedido por WhatsApp</button>' +
+        '<p class="cart-note">Te llevaremos a WhatsApp con tu pedido armado para confirmarlo.</p>';
+
+      const checkoutBtn = document.getElementById('cartCheckoutBtn');
+      if(checkoutBtn){
+        checkoutBtn.addEventListener('click', function(){
+          const lines = cart.map(function(item){
+            return '- ' + item.qty + 'x ' + item.name + (item.variant ? ' (' + item.variant + ')' : '');
+          });
+          const msg = 'Hola, quiero pedir:\n' + lines.join('\n') + '\n\nTotal aprox: ' + money(subtotal);
+          window.open('https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(msg), '_blank');
+        });
+      }
+    }
+  }
+
+  if(cartBody){
+    cartBody.addEventListener('click', function(e){
+      const btn = e.target.closest('button[data-action]');
+      if(!btn) return;
+      const row = btn.closest('.cart-item');
+      const id = row && row.dataset.id;
+      if(!id) return;
+      let cart = getCart();
+      const idx = cart.findIndex(function(i){ return i.id === id; });
+      if(idx === -1) return;
+      const action = btn.dataset.action;
+      if(action === 'inc') cart[idx].qty += 1;
+      if(action === 'dec') cart[idx].qty = Math.max(1, cart[idx].qty - 1);
+      if(action === 'remove') cart.splice(idx, 1);
+      saveCart(cart);
+      renderCart();
+    });
+  }
+
+  function bumpIcon(){
+    if(!cartIconBtn) return;
+    cartIconBtn.classList.remove('bump');
+    void cartIconBtn.offsetWidth;
+    cartIconBtn.classList.add('bump');
+  }
+
+  window.addToCart = function(item){
+    const cart = getCart();
+    const existing = cart.find(function(i){ return i.id === item.id; });
+    if(existing){ existing.qty += 1; }
+    else { cart.push(Object.assign({qty:1}, item)); }
+    saveCart(cart);
+    renderCart();
+    bumpIcon();
+    openCart();
+  };
+
+  document.querySelectorAll('[data-add-to-cart]').forEach(function(el){
+    el.addEventListener('click', function(e){
+      e.preventDefault();
+      window.addToCart({
+        id: el.dataset.addToCart,
+        name: el.dataset.cartName || '',
+        variant: el.dataset.cartVariant || '',
+        price: Number(el.dataset.cartPrice) || 0,
+        initial: (el.dataset.cartName || '?').charAt(0)
+      });
+    });
+  });
+
+  renderCart();
+})();
+</script>
+
+</body>
+</html>
