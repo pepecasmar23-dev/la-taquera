@@ -178,7 +178,7 @@ footer{background:#150C08;color:rgba(242,233,216,.7);padding:64px 0 30px;}
 .fab:hover{transform:translateY(-3px) scale(1.05);}
 
 /* ---------- cursor: la mascota de ajo sustituye al puntero ---------- */
-.cursor-sticker{position:fixed;top:0;left:0;width:54px;height:auto;pointer-events:none;z-index:199;opacity:0;will-change:transform;filter:drop-shadow(0 10px 18px rgba(0,0,0,.4));}
+.cursor-sticker{position:fixed;top:0;left:0;width:54px;height:auto;pointer-events:none;z-index:500;opacity:0;will-change:transform;filter:drop-shadow(0 10px 18px rgba(0,0,0,.4));}
 @media (hover:hover) and (pointer:fine){
   body{cursor:none;}
   input,textarea,select{cursor:text;}
@@ -524,7 +524,7 @@ if(window.matchMedia('(hover:hover) and (pointer:fine)').matches){
   /* elementos que llevan fuera del sitio: el ajo escupe fuego */
   const srcDefault = cursorSticker.getAttribute("data-default");
   const srcFire = cursorSticker.getAttribute("data-fire");
-  document.querySelectorAll("button, .btn, a.variant-buy:not(.btn-disabled), a.fab, .cat-pill, .store-logo, .merch-card, .cursor-fire-link").forEach(el=>{
+  document.querySelectorAll("button, .btn, a.variant-buy:not(.btn-disabled), a.fab, .cat-pill, .store-logo, .merch-card, .cursor-fire-link, .nav-links a").forEach(el=>{
     el.addEventListener("mouseenter", ()=>{ if(srcFire) cursorSticker.src = srcFire; });
     el.addEventListener("mouseleave", ()=>{ if(srcDefault) cursorSticker.src = srcDefault; });
   });
