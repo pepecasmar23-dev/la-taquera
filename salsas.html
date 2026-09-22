@@ -215,7 +215,7 @@ footer{background:#150C08;color:rgba(242,233,216,.7);padding:64px 0 30px;}
 .fab:hover{transform:translateY(-3px) scale(1.05);}
 
 /* ---------- cursor: la mascota de ajo sustituye al puntero ---------- */
-.cursor-sticker{position:fixed;top:0;left:0;width:54px;height:auto;pointer-events:none;z-index:199;opacity:0;will-change:transform;filter:drop-shadow(0 10px 18px rgba(0,0,0,.4));}
+.cursor-sticker{position:fixed;top:0;left:0;width:54px;height:auto;pointer-events:none;z-index:500;opacity:0;will-change:transform;filter:drop-shadow(0 10px 18px rgba(0,0,0,.4));}
 @media (hover:hover) and (pointer:fine){
   body{cursor:none;}
   input,textarea,select{cursor:text;}
@@ -246,7 +246,6 @@ footer{background:#150C08;color:rgba(242,233,216,.7);padding:64px 0 30px;}
     </button>
     <nav class="nav-links">
       <a href="index.html#top">Inicio</a>
-      <a href="index.html#sazon">El Sazón</a>
       <a href="salsas.html" class="active">Salsas</a>
       <a href="index.html#comprar">Dónde comprar</a>
     </nav>
@@ -345,7 +344,7 @@ footer{background:#150C08;color:rgba(242,233,216,.7);padding:64px 0 30px;}
       <!-- 250 ML -->
       <div class="sauce-card reveal reveal-d2" data-product-id="salsa-250">
         <div class="sauce-card-media">
-          <img src="img/i016.jpg" alt="Salsa La Taquera 250 ml" style="object-position:50% 18%;">
+          <img src="img/i017.jpg" alt="Salsa La Taquera 250 ml" style="object-position:50% 22%;">
           <div class="sauce-card-media-scrim"></div>
           <div class="sauce-price-tag"><span class="amt">$79</span><span class="cur">MXN</span></div>
           <div class="sauce-card-size">250 ml · Familiar</div>
@@ -563,7 +562,7 @@ if(window.matchMedia('(hover:hover) and (pointer:fine)').matches){
 
   const srcDefault = cursorSticker.getAttribute("data-default");
   const srcFire = cursorSticker.getAttribute("data-fire");
-  document.querySelectorAll("button, .btn, .fab").forEach(el=>{
+  document.querySelectorAll("button, .btn, .fab, .nav-links a").forEach(el=>{
     el.addEventListener("mouseenter", ()=>{ if(srcFire) cursorSticker.src = srcFire; });
     el.addEventListener("mouseleave", ()=>{ if(srcDefault) cursorSticker.src = srcDefault; });
   });
