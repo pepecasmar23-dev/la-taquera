@@ -217,7 +217,7 @@ footer{background:#150C08;color:rgba(242,233,216,.7);padding:64px 0 30px;}
 .fab:hover{transform:translateY(-3px) scale(1.05);}
 
 /* ---------- cursor: la mascota de ajo sustituye al puntero ---------- */
-.cursor-sticker{position:fixed;top:0;left:0;width:54px;height:auto;pointer-events:none;z-index:500;opacity:0;will-change:transform;filter:drop-shadow(0 10px 18px rgba(0,0,0,.4));}
+.cursor-sticker{position:fixed;top:0;left:0;width:54px;height:auto;pointer-events:none;z-index:500;opacity:0;will-change:transform;filter:drop-shadow(0 10px 18px rgba(0,0,0,.4));transition:opacity .2s ease;}
 @media (hover:hover) and (pointer:fine){
   body{cursor:none;}
   input,textarea,select{cursor:text;}
@@ -538,11 +538,21 @@ if(window.matchMedia('(hover:hover) and (pointer:fine)').matches){
 
   const lerp = (a, b, t) => a + (b - a) * t;
   let mx = window.innerWidth/2, my = window.innerHeight/2, sx = mx, sy = my;
-  let shown = false, hovering = false, rot = -10;
+  let shown = false, hovering = false, rot = -10, overPhoto = false;
+
+  function updateOpacity(){
+    cursorSticker.style.opacity = (shown && !overPhoto) ? "1" : "0";
+  }
 
   document.addEventListener("mousemove", (e)=>{
     mx = e.clientX; my = e.clientY;
-    if(!shown){ cursorSticker.style.opacity = "1"; shown = true; }
+    if(!shown){ shown = true; updateOpacity(); }
+  });
+
+  /* ocultar la mascota justo encima de las fotos de producto para que no tape la foto */
+  document.querySelectorAll(".sauce-card-media").forEach(el=>{
+    el.addEventListener("mouseenter", ()=>{ overPhoto = true; updateOpacity(); });
+    el.addEventListener("mouseleave", ()=>{ overPhoto = false; updateOpacity(); });
   });
 
   function stickerLoop(){
