@@ -151,9 +151,11 @@ section{position:relative;}
 .section-head p{font-size:16.5px;line-height:1.7;color:rgba(34,26,20,.72);margin-top:16px;max-width:520px;}
 
 /* ---------- sauce cards (campaign spread) ---------- */
-.sauce-grid{display:grid;grid-template-columns:1fr 1fr;gap:34px;}
+.sauce-grid{display:grid;grid-template-columns:1fr 1fr;gap:34px;align-items:start;}
 .sauce-card{position:relative;border-radius:28px;overflow:hidden;background:var(--red-darker);color:var(--cream-soft);box-shadow:0 30px 60px -26px rgba(34,26,20,.5);display:flex;flex-direction:column;}
 .sauce-card-media{position:relative;aspect-ratio:4/5;overflow:hidden;background:#e6dcc8;}
+.sauce-card-media.media-full{aspect-ratio:998/2047;}
+.sauce-card-media.media-full img{object-fit:contain;}
 .sauce-card-media img{width:100%;height:100%;object-fit:cover;transition:transform .7s cubic-bezier(.2,.8,.2,1);}
 .sauce-card:hover .sauce-card-media img{transform:scale(1.06);}
 .sauce-card-media-scrim{position:absolute;inset:0;background:linear-gradient(0deg,rgba(20,5,2,.86) 0%,rgba(20,5,2,0) 42%);}
@@ -346,7 +348,7 @@ footer{background:#150C08;color:rgba(242,233,216,.7);padding:64px 0 30px;}
 
       <!-- 250 ML -->
       <div class="sauce-card reveal reveal-d2" data-product-id="salsa-250">
-        <div class="sauce-card-media">
+        <div class="sauce-card-media media-full">
           <img src="img/i017.jpg" alt="Salsa La Taquera 250 ml">
           <div class="sauce-card-media-scrim"></div>
           <div class="sauce-price-tag"><span class="amt">$79</span><span class="cur">MXN</span></div>
