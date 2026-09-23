@@ -181,7 +181,7 @@ section{position:relative;}
 /* ---------- immersive UI chrome: progress bar + custom cursor ---------- */
 .scroll-progress{position:fixed;top:0;left:0;height:3px;width:100%;background:transparent;z-index:200;pointer-events:none;}
 .scroll-progress i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--red),var(--gold));transform-origin:left center;box-shadow:0 0 12px rgba(196,42,31,.6);}
-.cursor-sticker{position:fixed;top:0;left:0;width:54px;height:auto;pointer-events:none;z-index:500;opacity:0;will-change:transform;filter:drop-shadow(0 10px 18px rgba(0,0,0,.4));}
+.cursor-sticker{position:fixed;top:0;left:0;width:54px;height:auto;pointer-events:none;z-index:500;opacity:0;will-change:transform;filter:drop-shadow(0 10px 18px rgba(0,0,0,.4));transition:opacity .2s ease;}
 @media (hover:hover) and (pointer:fine){
   body{cursor:none;}
   input,textarea,select{cursor:text;}
@@ -211,7 +211,7 @@ section{position:relative;}
 .product{position:relative;min-height:100vh;display:flex;align-items:flex-end;overflow:hidden;background:var(--red-darker);color:var(--cream-soft);}
 .product-media{position:absolute;inset:0;overflow:hidden;}
 .product-media img{width:100%;height:100%;object-fit:cover;object-position:50% 38%;}
-.product-scrim{position:absolute;inset:0;background:linear-gradient(0deg,rgba(45,8,4,.95) 0%,rgba(60,12,6,.62) 34%,rgba(76,15,7,.16) 64%,rgba(90,18,9,.04) 100%),linear-gradient(100deg,rgba(20,5,2,.55) 0%,rgba(20,5,2,0) 55%);}
+.product-scrim{position:absolute;inset:0;pointer-events:none;background:linear-gradient(0deg,rgba(45,8,4,.95) 0%,rgba(60,12,6,.62) 34%,rgba(76,15,7,.16) 64%,rgba(90,18,9,.04) 100%),linear-gradient(100deg,rgba(20,5,2,.55) 0%,rgba(20,5,2,0) 55%);}
 .product-content{position:relative;z-index:2;width:100%;padding:140px 24px 90px;}
 .price-tag{position:absolute;top:10%;right:6%;z-index:3;background:var(--gold);color:var(--ink);width:96px;height:96px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;transform:rotate(10deg);box-shadow:0 14px 24px -8px rgba(0,0,0,.4);}
 .price-tag .amt{font-family:'Anton',sans-serif;font-size:23px;line-height:1;}
@@ -761,10 +761,19 @@ const cursorSticker = document.getElementById('cursorSticker');
 const isTouch = window.matchMedia('(hover:none), (pointer:coarse)').matches;
 if(cursorSticker && !isTouch){
   let mx = window.innerWidth/2, my = window.innerHeight/2, sx = mx, sy = my;
-  let shown = false, hovering = false, rot = -10;
+  let shown = false, hovering = false, rot = -10, overPhoto = false;
+  function updateOpacity(){
+    /* oculta la mascota sobre la foto de producto, salvo que estés justo encima de un botón/enlace (ahí sí se muestra, con fuego) */
+    cursorSticker.style.opacity = (shown && (!overPhoto || hovering)) ? '1' : '0';
+  }
   document.addEventListener('mousemove', (e)=>{
     mx = e.clientX; my = e.clientY;
-    if(!shown){ cursorSticker.style.opacity = '1'; shown = true; }
+    if(!shown){ shown = true; updateOpacity(); }
+  });
+
+  document.querySelectorAll('.product').forEach(el=>{
+    el.addEventListener('mouseenter', ()=>{ overPhoto = true; updateOpacity(); });
+    el.addEventListener('mouseleave', ()=>{ overPhoto = false; updateOpacity(); });
   });
   function stickerLoop(){
     const prevSx = sx;
@@ -779,8 +788,8 @@ if(cursorSticker && !isTouch){
   }
   stickerLoop();
   document.querySelectorAll('a, button, .tilt-card').forEach(el=>{
-    el.addEventListener('mouseenter', ()=> hovering = true);
-    el.addEventListener('mouseleave', ()=> hovering = false);
+    el.addEventListener('mouseenter', ()=> { hovering = true; updateOpacity(); });
+    el.addEventListener('mouseleave', ()=> { hovering = false; updateOpacity(); });
   });
 
   /* elementos que llevan a otra pagina / fuera del sitio: el garlo escupe fuego */
