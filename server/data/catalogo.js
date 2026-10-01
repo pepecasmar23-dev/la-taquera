@@ -16,7 +16,8 @@ const CURRENCY = 'MXN';
 const MAX_QUANTITY_PER_ITEM = 20;
 
 const CATALOGO = {
-  'salsa-150':              { title: 'Salsa La Taquera 150 ml',                 price: 79 },
+  'salsa-150':              { title: 'Salsa La Taquera 150 ml',                 price: 49 },
+  'salsa-250':               { title: 'Salsa La Taquera 250 ml',                 price: 79 },
   'playera-blanca-pecho':   { title: 'Playera blanca, logo al pecho',           price: 449 },
   'playera-negra-pecho':    { title: 'Playera negra, logo al pecho',            price: 449 },
   'playera-blanca-espalda': { title: 'Playera blanca, ajo en la espalda',       price: 479 },
