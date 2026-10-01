@@ -491,7 +491,8 @@ footer{background:#150C08;color:rgba(242,233,216,.7);padding:64px 0 30px;}
 .soon-chip{display:inline-flex;align-items:center;margin-left:9px;background:var(--gold);color:var(--ink);font-family:'Oswald',sans-serif;font-size:9.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:3px 9px 3px 8px;border-radius:999px;white-space:nowrap;box-shadow:0 4px 10px -4px rgba(0,0,0,.35);}
 .soon-chip svg{width:9px;height:9px;margin-right:3px;flex:none;}
 .btn-wsp.btn-disabled{background:#c9d6cd;color:#7c8a80;box-shadow:none;}
-.sold-out-ribbon{position:absolute;top:18px;left:-34%;width:168%;padding:7px 0;background:var(--red);color:var(--cream-soft);font-family:'Oswald',sans-serif;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;text-align:center;transform:rotate(-40deg);box-shadow:0 4px 10px -3px rgba(0,0,0,.45);z-index:3;pointer-events:none;}
+.sold-out-stamp{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-10deg);padding:10px 26px;border:3px solid var(--red);color:var(--red);background:rgba(250,245,234,.92);font-family:'Anton',sans-serif;font-size:24px;letter-spacing:.06em;text-align:center;z-index:5;pointer-events:none;white-space:nowrap;}
+.sold-out img{filter:grayscale(100%);}
 .checkout-modal{position:fixed;inset:0;z-index:300;display:none;align-items:center;justify-content:center;padding:20px;}
 .checkout-modal.open{display:flex;}
 .checkout-modal-backdrop{position:absolute;inset:0;background:rgba(16,9,6,.66);backdrop-filter:blur(2px);}
@@ -1166,11 +1167,11 @@ if(typeof gsap !== 'undefined'){
     if(!container || container.classList.contains('sold-out')) return;
     container.classList.add('sold-out');
     const media = container.querySelector('.product-media, .variant-media');
-    if(media && !media.querySelector('.sold-out-ribbon')){
-      const ribbon = document.createElement('div');
-      ribbon.className = 'sold-out-ribbon';
-      ribbon.textContent = 'Agotado';
-      media.appendChild(ribbon);
+    if(media && !media.querySelector('.sold-out-stamp')){
+      const stamp = document.createElement('div');
+      stamp.className = 'sold-out-stamp';
+      stamp.textContent = 'SOLD OUT';
+      media.appendChild(stamp);
     }
     container.querySelectorAll('a, button').forEach(function(el){
       if(!el.classList.contains('btn-disabled')){
