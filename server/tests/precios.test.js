@@ -15,9 +15,12 @@ function check(nombre, condicion, extra) {
 
 // --- Lo importante: un cliente malicioso no puede fijar el precio ------------
 let r = resolverItems([{ id: 'salsa-150', quantity: 1, unit_price: 1, title: 'Salsa gratis' }]);
-check('ignora el unit_price que manda el cliente', r.ok && r.items[0].unit_price === 79, 'precio = ' + (r.ok ? r.items[0].unit_price : r.error));
+check('ignora el unit_price que manda el cliente', r.ok && r.items[0].unit_price === 49, 'precio = ' + (r.ok ? r.items[0].unit_price : r.error));
 check('ignora el title que manda el cliente', r.ok && r.items[0].title === 'Salsa La Taquera 150 ml');
-check('el total lo calcula el servidor', r.ok && r.amount === 79, 'total = ' + r.amount);
+check('el total lo calcula el servidor', r.ok && r.amount === 49, 'total = ' + r.amount);
+
+r = resolverItems([{ id: 'salsa-250', quantity: 1 }]);
+check('la salsa de 250 ml ya existe en el catálogo del servidor', r.ok && r.items[0].unit_price === 79, 'precio = ' + (r.ok ? r.items[0].unit_price : r.error));
 
 // --- Varias líneas ----------------------------------------------------------
 r = resolverItems([{ id: 'gorra-crema', quantity: 2 }, { id: 'stickers-pack', quantity: 3 }]);
@@ -36,12 +39,13 @@ check('rechaza undefined', !resolverItems(undefined).ok);
 
 // --- Coherencia con el catálogo del sitio -----------------------------------
 const idsDelSitio = [
+  'salsa-150', 'salsa-250',
   'gorra-crema', 'gorra-negra',
   'playera-blanca-espalda', 'playera-blanca-pecho',
   'playera-negra-espalda', 'playera-negra-pecho',
   'stickers-pack', 'tote-natural',
 ];
-check('los 8 productos del catálogo web existen en el servidor',
+check('los 10 productos del catálogo web existen en el servidor',
   idsDelSitio.every((id) => resolverItems([{ id, quantity: 1 }]).ok));
 check('todos los precios del catálogo son números positivos',
   Object.values(CATALOGO).every((p) => Number.isFinite(p.price) && p.price > 0));
